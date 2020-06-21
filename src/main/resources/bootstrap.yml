@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    vault:
+      token: ${VAULT_SECURITY_TOKEN}
+      scheme: ${VAULT_SCHEME}
+      host: ${VAULT_HOST}
+      generic:
+        application-name: movie-challenge

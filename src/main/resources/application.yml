@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: movie-challenge
+
+  jackson:
+    date-format: 'yyyy-MM-dd'
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+  data:
+    mongodb:
+      auto-index-creation: false
+      uri: mongodb://${mongodb.username}:${mongodb.password}@${MONGODB_URI}/${MONGODB_DATABASE}?authSource=${MONGODB_AUTH_DATABASE}
+      database: ${MONGODB_DATABASE}
+
+  management:
+    endpoint:
+      health:
+        show-details: always
+    endpoints:
+      web:
+        exposure:
+          include: env, health, info, loggers, httptrace

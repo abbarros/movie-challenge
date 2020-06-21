@@ -1,0 +1,63 @@
+version: '2'
+services:
+  movie-challenge:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    image: abbarros/movie-challenge
+    container_name: movie-challenge
+    ports:
+      - "8080:8080"
+    environment:
+      - VAULT_HOST=vault-local
+      - VAULT_SCHEME=http
+      - VAULT_SECURITY_TOKEN=YcwX43eM7FpCpDMpCXu
+      - VAULT_PORT=8200
+      - ADDITIONAL_OPTS= -Dspring.profiles.active=local
+      - MONGODB_URI=mongo-local:27017
+      - MONGODB_DATABASE=movie
+      - MONGODB_AUTH_DATABASE=admin
+    links:
+      - vault-local
+      - mongo-local
+    depends_on:
+      - vault-local
+      - mongo-local
+
+  vault-local:
+    image: vault:0.8.3
+    ports:
+      - 8200:8200
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=YcwX43eM7FpCpDMpCXu
+    cap_add:
+      - IPC_LOCK
+
+  vault-cli:
+    image: vault:0.8.3
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - VAULT_TOKEN=YcwX43eM7FpCpDMpCXu
+      - VAULT_ADDR=http://vault-local:8200
+    command: vault write secret/movie-challenge mongodb.username=movie mongodb.password=movie
+    depends_on:
+      - vault-local
+    links:
+      - vault-local
+
+  mongo-local:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=movie
+      - MONGO_INITDB_ROOT_PASSWORD=movie
+      - MONGODB_DATABASE=movie
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.57.0/24
