@@ -70,7 +70,7 @@ Para alterar o level do log na aplicação ```OFF```, ```ERROR```, ```WARN```, `
 ## CorrelationId
 Para rastrear melhor a execução da aplicação, incluí um Header chamado ```correlationId```. Quando a aplicação recebe uma requisição, existe um filter ```MDCConfig``` que verifica se o correlationId foi enviado, e realiza um put desse cara no MDC, caso contrário, a aplicação gera um UUID randômico. Utilizei também um appender do logback para formatar as mensagens de log com a informação do correlationId - o logback pode ser usado também com o appender do Gelf. 
 
-INSERIR IMAGEM
+![CorrelationId](/src/main/resources/docs/correlationId.png)
 
 ## Spring Cloud Vault
 O Spring Cloud Vault acessa diferentes recursos e configurações, por padrão nos contextos:
