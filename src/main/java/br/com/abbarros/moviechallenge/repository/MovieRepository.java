@@ -6,10 +6,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface MovieRepository extends MongoRepository<Movie, String> {
+public interface MovieRepository extends MongoRepository<Movie, String>, MovieMongoOperation {
 
-    boolean existsByName(String name);
-
-    List<Movie> findAllByCensorship(Censorship censorship);
+        List<Movie> findAllByCensorship(Censorship censorship);
 
 }
